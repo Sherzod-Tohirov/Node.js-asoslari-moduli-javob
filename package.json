@@ -4,13 +4,16 @@
   "description": "Node.js asoslari moduli bo'yicha vazifa",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "nodemon --ext js,json server.js",
+    "clear_cache": "npx nodemon --exec 'node server.js'",
     "start": "node server.js"
   },
   "author": "Sherzod Tohirov",
   "license": "ISC",
   "dependencies": {
-    "nodemon": "^3.1.7",
     "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }
