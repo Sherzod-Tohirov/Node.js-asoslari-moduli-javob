@@ -118,9 +118,10 @@ const server = http.createServer((req, res) => {
                   <main>
                     <h1>Books</h1>
                  <ol>
-                    ${db
-                      ?.map(
-                        (book, index) => `
+                    ${
+                      db
+                        ?.map(
+                          (book, index) => `
                                  <li>
                                    <span>${index + 1})</span>
                                    <p>${book.title} - ${book.author}</p>
@@ -170,8 +171,10 @@ const server = http.createServer((req, res) => {
                                      })()">delete</button>
                                    </div>
                                  </li>`
-                      )
-                      .join("") || "<span style='opacity: 0.4; pointer-events: none'>Kitoblar hozircha mavjud emas.</span>"}
+                        )
+                        .join("") ||
+                      "<span style='opacity: 0.4; pointer-events: none'>Kitoblar hozircha mavjud emas.</span>"
+                    }
                  </ol>
                  <form action="/books" method="POST" style="
                     max-width: 50vw;
@@ -262,6 +265,8 @@ const server = http.createServer((req, res) => {
       } else {
         res.end();
       }
+    } else {
+      res.end("Ma'lumot topilmadi !");
     }
   } else if (
     urlPath.startsWith("/books/delete/") &&
@@ -269,11 +274,13 @@ const server = http.createServer((req, res) => {
     method === "POST"
   ) {
     const bookId = getBookId(parsedUrl);
-    const index = db.findIndex(
-      (book) => String(book.id) === String(bookId)
-    );
-    db.splice(index, 1);
-    storeToDatabase(db);
+    const index = db.findIndex((book) => String(book.id) === String(bookId));
+    if (index !== undefined) {
+      db.splice(index, 1);
+      storeToDatabase(db);
+    } else {
+      res.end("Ma'lumot topilmadi !");
+    }
     if (!req.headersSent) {
       res.writeHead(301, { Location: "/books" });
       res.end();
